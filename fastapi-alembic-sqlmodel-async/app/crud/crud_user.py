@@ -49,8 +49,7 @@ class CRUDUser(CRUDBase[User, IUserCreate, IUserUpdate]):
         update_data["first_name"] = obj_in.first_name
         update_data["last_name"] = obj_in.last_name
 
-        response = super().update(db_session, db_obj=db_obj, obj_in=update_data)
-        return response
+        return super().update(db_session, db_obj=db_obj, obj_in=update_data)
 
     async def update_is_active(
         self,

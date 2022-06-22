@@ -53,7 +53,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     async def get_multi_paginated(
         self, db_session: AsyncSession, *, params: Optional[Params] = Params(), query: Optional[Union[T, Select[T], SelectOfScalar[T]]] = None
     ) -> Page[ModelType]:
-        if query == None:
+        if query is None:
             query = self.model
         return await paginate(db_session, query, params)
 
