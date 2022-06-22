@@ -42,7 +42,7 @@ async def read_users_list(
     """
     Retrieve users by role name.
     """
-    user_status = True if status == IUserStatus.active else False
+    user_status = status == IUserStatus.active
     query = select(User).join(Role, User.role_id == Role.id).where(and_(Role.name == role_name, User.is_active == user_status)).order_by(User.first_name)
     users = await crud.user.get_multi_paginated(db_session, query=query, params=params)
     return IGetResponseBase[Page[IUserReadWithoutGroups]](data=users)

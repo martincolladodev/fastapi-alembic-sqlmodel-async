@@ -40,22 +40,18 @@ def get_current_user(required_roles: List[str] = None) -> User:
         user: User = await crud.user.get_user_by_id(db_session, id=payload["sub"])
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
-        
+
         if not user.is_active:
             raise HTTPException(status_code=400, detail="Inactive user")
 
         if required_roles:
-            is_valid_role = False
-            for role in required_roles:
-                if role == user.role.name:
-                    is_valid_role = True
-                    
-            if is_valid_role == False:
+            is_valid_role = any(role == user.role.name for role in required_roles)
+            if not is_valid_role:
                 raise HTTPException(
                     status_code=403,
                     detail=f'Role "{required_roles}" is required to perform this action',
                 )
-        
+
         return user
 
     return current_user
